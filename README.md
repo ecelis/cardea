@@ -26,7 +26,9 @@ Clone the repository and link the configuration:
 
 ```bash
 git clone git@github.com:ecelis/cardea.git ~/.vim_cardea
-ln -s ~/.vim_cardea/.vimrc ~/.vimrc
+cd ~/.vim_cardea
+chmod +x install.sh
+./install.sh
 ```
 
 Open Vim; the configuration is set to automatically download vim-plug and install all plugins on the first run.
