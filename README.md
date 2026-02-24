@@ -4,6 +4,10 @@
 
 Built for engineers who value speed, asynchronous execution, and a "nerd-rocker" aesthetic.
 
+🎨 Aesthetics
+
+Cardea uses the Gruvbox Material (Soft) theme to provide a high-contrast yet eye-friendly environment reminiscent of classic Unix workstations.
+
 ## 🚀 Features
 
 * **Vim 9.2 Optimized:** Leverages the latest performance improvements.
@@ -19,6 +23,22 @@ Built for engineers who value speed, asynchronous execution, and a "nerd-rocker"
 1.  **Vim 9.2+** (compiled with `+python3`).
 2.  **Node.js** (required for CoC/LSP).
 3.  **FZF** and **Ripgrep** (`rg`) installed on your system.
+
+#### FreeBSD Requisites
+
+At the time of the intial commit FreeBSD still ships vim 9.1
+```sh
+pkg install \
+    gettext-runtime \
+    gettext-tools \
+    indexinfo libffi \
+    libtextstyle \
+    mpdecimal \
+    pkgconf \
+    readline \
+    gmake \
+    gcc
+```
 
 ### Setup
 
@@ -49,22 +69,22 @@ Cardea uses the Spacebar as the <Leader> key for ergonomic, high-speed navigatio
 
 |Key|Action|
 |---|------|
-|<Leader> f|Find Files (via FZF)|
-|<Leader> b|Buffers (Switch between open files)|
-|<Leader> n|NERDTree (Toggle file explorer sidebar)|
-|<Leader> g|Git Status (via Fugitive)|
-|CTRL + j/k/h/l|Navigate between split windows|
+|`<Leader> f`|Find Files (via FZF)|
+|`<Leader> b`|Buffers (Switch between open files)|
+|`<Leader> n`|NERDTree (Toggle file explorer sidebar)|
+|`<Leader> g`|Git Status (via Fugitive)|
+|`CTRL + j/k/h/l`|Navigate between split windows|
 
 ### Code Intelligence (LSP)
 
 |Key|Action|
 |---|------|
-|gd	|Go to Definition|
-|gy	|Go to Type Definition|
-|gr	|Find References|
-|K	|Show Documentation (Hover)|
-|<Leader> rn	|Rename Symbol (Refactor)|
-|<Tab>	|Trigger Autocomplete / Next Item|
+|`gd`	|Go to Definition|
+|`gy`	|Go to Type Definition|
+|`gr`	|Find References|
+|`K`	|Show Documentation (Hover)|
+|`<Leader> rni`	|Rename Symbol (Refactor)|
+|`<Tab>`	|Trigger Autocomplete / Next Item|
 
 ### Editing Defaults
 
@@ -72,9 +92,27 @@ Cardea uses the Spacebar as the <Leader> key for ergonomic, high-speed navigatio
 - Indentation: 4 spaces (Expandtab enabled).
 - Clipboard: Integrated with system clipboard (unnamedplus).
 
-🎨 Aesthetics
+## 🐹 Go Development Environment (IDE Features)
 
-Cardea uses the Gruvbox Material (Soft) theme to provide a high-contrast yet eye-friendly environment reminiscent of classic Unix workstations.
+Cardea is pre-configured to handle Go development with `gopls`.
+
+### Key Go Features:
+* **Auto-Import:** Missing packages are added, and unused ones are removed on save.
+* **Go-to-Definition:** Instant jumping to source code or standard library.
+* **Type Information:** Hover over any variable to see its underlying struct or interface.
+* **Test Integration:** Run tests directly from the buffer.
+
+### Go-Specific Keybindings:
+| Key | Action |
+|-----|--------|
+| `gd` | Go to Definition |
+| `gi` | Go to Implementation (useful for interfaces) |
+| `gr` | Find all references of a function/struct |
+| `:OR` | **Organize Imports** (manual trigger) |
+
+### Setup for Go
+Inside Vim, run:
+`:CocInstall coc-go`
 
 ---
 _“Janus watches the gate; Cardea moves the hinge.”_
