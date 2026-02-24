@@ -47,12 +47,13 @@ Cardea uses the Spacebar as the <Leader> key for ergonomic, high-speed navigatio
 
 ### General & Navigation
 
-Key,Action
-<Leader> f,Find Files (via FZF)
-<Leader> b,Buffers (Switch between open files)
-<Leader> n,NERDTree (Toggle file explorer sidebar)
-<Leader> g,Git Status (via Fugitive)
-CTRL + j/k/h/l,Navigate between split windows
+|Key|Action|
+|---|------|
+|<Leader> f|Find Files (via FZF)|
+|<Leader> b|Buffers (Switch between open files)|
+|<Leader> n|NERDTree (Toggle file explorer sidebar)|
+|<Leader> g|Git Status (via Fugitive)|
+|CTRL + j/k/h/l|Navigate between split windows|
 
 ### Code Intelligence (LSP)
 
