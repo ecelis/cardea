@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Cardea Installer for Fedora & FreeBSD
 
 set -e
