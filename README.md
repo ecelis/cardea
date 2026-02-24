@@ -25,7 +25,7 @@ Built for engineers who value speed, asynchronous execution, and a "nerd-rocker"
 Clone the repository and link the configuration:
 
 ```bash
-git clone [https://github.com/ecelis/cardea.git](https://github.com/ecelis/cardea.git) ~/.vim_cardea
+git clone git@github.com:ecelis/cardea.git ~/.vim_cardea
 ln -s ~/.vim_cardea/.vimrc ~/.vimrc
 ```
 
