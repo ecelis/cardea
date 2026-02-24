@@ -57,13 +57,14 @@ Cardea uses the Spacebar as the <Leader> key for ergonomic, high-speed navigatio
 
 ### Code Intelligence (LSP)
 
-Key	Action
-gd	Go to Definition
-gy	Go to Type Definition
-gr	Find References
-K	Show Documentation (Hover)
-<Leader> rn	Rename Symbol (Refactor)
-<Tab>	Trigger Autocomplete / Next Item
+|Key|Action|
+|---|------|
+|gd	|Go to Definition|
+|gy	|Go to Type Definition|
+|gr	|Find References|
+|K	|Show Documentation (Hover)|
+|<Leader> rn	|Rename Symbol (Refactor)|
+|<Tab>	|Trigger Autocomplete / Next Item|
 
 ### Editing Defaults
 
