@@ -1,4 +1,23 @@
 " --- Cardea Vim Core Config (Vim 9.2 compatible) ---
+" Copyright Ernesto Celis <ecelis@sdf.org>
+"
+" --- Cardea Cross-Platform Logic ---
+let g:is_freebsd = has("freebsd")
+let g:is_linux = has("unix") && !has("freebsd") && !has("mac")
+
+if g:is_freebsd
+    " FreeBSD specific: Ensure we use the correct path for system binaries
+    set shell=/usr/local/bin/bash
+    let g:sqlite_clib_path = '/usr/local/lib/libsqlite3.so' " Useful for some plugins
+elseif g:is_linux
+    " Fedora specific: Standard Linux paths
+    set shell=/bin/bash
+endif
+
+" Cross-platform Clipboard handling
+if has('unnamedplus')
+    set clipboard=unnamedplus
+endif
 
 " 1. Automatic Plugin Manager Installation (vim-plug)
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'

@@ -2,7 +2,7 @@
 
 **Cardea** is a modern, high-performance configuration for Vim 9.2+. Named after the Roman Goddess of Hinges, it serves as the functional successor to the classic Janus distribution—providing the "swing" and transition between a traditional editor and a modern IDE.
 
-Built for Principal Engineers who value speed, asynchronous execution, and a "nerd-rocker" aesthetic.
+Built for engineers who value speed, asynchronous execution, and a "nerd-rocker" aesthetic.
 
 ## 🚀 Features
 
@@ -25,5 +25,53 @@ Built for Principal Engineers who value speed, asynchronous execution, and a "ne
 Clone the repository and link the configuration:
 
 ```bash
-git clone [https://github.com/your-username/cardea.git](https://github.com/your-username/cardea.git) ~/.vim_cardea
+git clone [https://github.com/ecelis/cardea.git](https://github.com/ecelis/cardea.git) ~/.vim_cardea
 ln -s ~/.vim_cardea/.vimrc ~/.vimrc
+```
+
+Open Vim; the configuration is set to automatically download vim-plug and install all plugins on the first run.
+Language Support
+
+Once inside Vim, install the engines for your primary stack:
+Vim Script
+
+```vim
+:CocInstall coc-go coc-pyright coc-json
+```
+
+## ⌨️ Keybindings
+
+Cardea uses the Spacebar as the <Leader> key for ergonomic, high-speed navigation.
+
+### General & Navigation
+
+Key,Action
+<Leader> f,Find Files (via FZF)
+<Leader> b,Buffers (Switch between open files)
+<Leader> n,NERDTree (Toggle file explorer sidebar)
+<Leader> g,Git Status (via Fugitive)
+CTRL + j/k/h/l,Navigate between split windows
+
+### Code Intelligence (LSP)
+
+Key	Action
+gd	Go to Definition
+gy	Go to Type Definition
+gr	Find References
+K	Show Documentation (Hover)
+<Leader> rn	Rename Symbol (Refactor)
+<Tab>	Trigger Autocomplete / Next Item
+
+### Editing Defaults
+
+- Line Numbers: Hybrid (Absolute current line + Relative others).
+- Indentation: 4 spaces (Expandtab enabled).
+- Clipboard: Integrated with system clipboard (unnamedplus).
+
+🎨 Aesthetics
+
+Cardea uses the Gruvbox Material (Soft) theme to provide a high-contrast yet eye-friendly environment reminiscent of classic Unix workstations.
+
+---
+_“Janus watches the gate; Cardea moves the hinge.”_
+
