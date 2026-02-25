@@ -45,6 +45,7 @@ if !g:is_retro_mode
         " Aesthetics
         Plug 'itchyny/lightline.vim'       " Lightweight status line
         Plug 'sainnhe/gruvbox-material'    " Clean, professional retro-vibe theme
+        Plug 'ghifarit53/tokyonight-vim'   " Tokyo Noght Theme
         Plug 'mhinz/vim-startify' " The Start Screen
     call plug#end()
 endif
@@ -92,15 +93,12 @@ set tabstop=4
 set smartindent
 
 " --- Cardea Text Formatting ---
-
 " Set the standard column width
 set textwidth=72
-
 " <Leader>w to re-format the current paragraph
 " <Leader>W to re-format the current visual selection
 nnoremap <leader>w gqap
 vnoremap <leader>w gq
-
 " Toggle line wrapping (visual only)
 nnoremap <leader>tw :set wrap!<CR>
 
@@ -108,29 +106,37 @@ nnoremap <leader>tw :set wrap!<CR>
 if has('termguicolors')
   set termguicolors
 endif
+
 if g:is_retro_mode
     " Retro Terminal Aesthetic
     autocmd ColorScheme * highlight Normal ctermbg=none guibg=black
     autocmd ColorScheme * highlight CursorLine ctermbg=233 guibg=#080808
-
     " Choose your Phosphor:
     " For Amber: guifg=#ffb000 | For Green: guifg=#33ff33
     autocmd VimEnter * highlight Normal guifg=#33ff33
-
     colorscheme default " Use the classic base
 else
     " Modern Professional Aesthetic
-    let g:gruvbox_material_background = 'soft'
-    colorscheme gruvbox-material
+    "let g:gruvbox_material_background = 'soft'
+    "colorscheme gruvbox-material
+
+    " Modern Face: Tokyo Night Aesthetic
+    set laststatus=2
+    set number relativenumber
+    set mouse=a
+    set clipboard=unnamedplus
+    set termguicolors
+    let g:tokyonight_style = 'night' " Options: 'storm', 'night', 'day'
+    let g:tokyonight_enable_italic = 1
+    colorscheme tokyonight
+
+    " 6. Basic Mappings (The 'Janos' Layer)
+    let mapleader = " "         " Space as leader is modern & ergonomic
+    nnoremap <leader>f :Files<CR>
+    nnoremap <leader>b :Buffers<CR>
+    nnoremap <leader>n :NERDTreeToggle<CR>
+    nnoremap <leader>g :G<CR>
 endif
-
-" 6. Basic Mappings (The 'Janos' Layer)
-let mapleader = " "         " Space as leader is modern & ergonomic
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>n :NERDTreeToggle<CR>
-nnoremap <leader>g :G<CR>
-
 " --- End Core Config ---
 
 if !g:is_retro_mode
@@ -184,6 +190,8 @@ if !g:is_retro_mode
     nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
     inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
     inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+    " --- End Intelligence ---
+
     " --- Cardea Session Management ---
     " Define what to save in a session
     set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize
@@ -193,57 +201,68 @@ if !g:is_retro_mode
     nnoremap <leader>sl :source .session.vim<CR>
     " Automatically save a session named 'LastSession' when exiting
     autocmd VimLeavePre * silent! execute 'Ssave! LastSession'
+
+    " --- Cardea Go Integration ---
+    " Auto-format and organize imports on save
+    autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+    autocmd BufWritePre *.go :silent call CocAction('format')
+
+    " Map :OR to manually organize imports if needed
+    command! -nargs=0 OR :call CocActionAsync('runCommand', 'editor.action.organizeImport')
+
+    " Add Go-specific status line info (Optional, requires lightline)
+    "let g:lightline = {
+    "  \ 'colorscheme': 'gruvbox_material',
+    "  \ 'active': {
+    "  \   'left': [ [ 'mode', 'paste' ],
+    "  \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'method' ] ]
+    "  \ },
+    "  \ 'component_function': {
+    "  \   'method': 'CocCurrentFunction'
+    "  \ },
+    "\ }
+    let g:lightline = {
+      \ 'colorscheme': 'tokyonight',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'method' ] ]
+      \ },
+      \ 'component_function': {
+      \   'method': 'CocCurrentFunction'
+      \ },
+    \ }
+
+    " --- Cardea Welcome Screen (Startify) ---
+    if !g:is_retro_mode
+        let g:startify_lists = [
+              \ { 'type': 'files',     'header': ['   Recent Files']            },
+              \ { 'type': 'dir',       'header': ['   Current Directory: '. getcwd()] },
+              \ { 'type': 'sessions',  'header': ['   Sessions']              },
+              \ { 'type': 'bookmarks', 'header': ['   Bookmarks']             },
+              \ ]
+
+        let g:startify_bookmarks = [
+              \ { 'c': '~/.vimrc' },
+              \ { 'j': '~/.vim/coc-settings.json' },
+              \ { 'p': '~/projects' },
+              \ ]
+
+        " Custom Header (A bit of Nerd-Rocker flair)
+        let g:startify_custom_header = [
+              \ '   _____               _',
+              \ '  / ____|             | |',
+              \ ' | |     __ _ _ __  __| | ___  __ _',
+              \ ' | |    / _` | ''__|/ _` |/ _ \/ _` |',
+              \ ' | |___| (_| | |  | (_| |  __/ (_| |',
+              \ '  \_____\__,_|_|   \__,_|\___|\__,_|',
+              \ '   Janus watches; Cardea moves.',
+              \ ]
+        " Automatically update sessions when quitting
+        let g:startify_session_persistence = 1
+
+        " Change the directory where Startify stores its global sessions
+        let g:startify_session_dir = '~/.vim/sessions'
+    endif
 endif
-" --- End Intelligence ---
 
-" --- Cardea Go Integration ---
-" Auto-format and organize imports on save
-autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
-autocmd BufWritePre *.go :silent call CocAction('format')
 
-" Map :OR to manually organize imports if needed
-command! -nargs=0 OR :call CocActionAsync('runCommand', 'editor.action.organizeImport')
-
-" Add Go-specific status line info (Optional, requires lightline)
-let g:lightline = {
-  \ 'colorscheme': 'gruvbox_material',
-  \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'method' ] ]
-  \ },
-  \ 'component_function': {
-  \   'method': 'CocCurrentFunction'
-  \ },
-\ }
-
-" --- Cardea Welcome Screen (Startify) ---
-if !g:is_retro_mode
-    let g:startify_lists = [
-          \ { 'type': 'files',     'header': ['   Recent Files']            },
-          \ { 'type': 'dir',       'header': ['   Current Directory: '. getcwd()] },
-          \ { 'type': 'sessions',  'header': ['   Sessions']              },
-          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']             },
-          \ ]
-
-    let g:startify_bookmarks = [
-          \ { 'c': '~/.vimrc' },
-          \ { 'j': '~/.vim/coc-settings.json' },
-          \ { 'p': '~/projects' },
-          \ ]
-
-    " Custom Header (A bit of Nerd-Rocker flair)
-    let g:startify_custom_header = [
-          \ '   _____               _',
-          \ '  / ____|             | |',
-          \ ' | |     __ _ _ __  __| | ___  __ _',
-          \ ' | |    / _` | ''__|/ _` |/ _ \/ _` |',
-          \ ' | |___| (_| | |  | (_| |  __/ (_| |',
-          \ '  \_____\__,_|_|   \__,_|\___|\__,_|',
-          \ '   Janus watches; Cardea moves.',
-          \ ]
-    " Automatically update sessions when quitting
-    let g:startify_session_persistence = 1
-
-    " Change the directory where Startify stores its global sessions
-    let g:startify_session_dir = '~/.vim/sessions'
-endif
