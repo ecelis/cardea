@@ -184,6 +184,15 @@ if !g:is_retro_mode
     nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
     inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
     inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+    " --- Cardea Session Management ---
+    " Define what to save in a session
+    set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize
+    " <Leader>ss to Save Session
+    nnoremap <leader>ss :mksession! .session.vim<CR> :echo "Session Saved to .session.vim"<CR>
+    " <Leader>sl to Load Session
+    nnoremap <leader>sl :source .session.vim<CR>
+    " Automatically save a session named 'LastSession' when exiting
+    autocmd VimLeavePre * silent! execute 'Ssave! LastSession'
 endif
 " --- End Intelligence ---
 
@@ -232,4 +241,9 @@ if !g:is_retro_mode
           \ '  \_____\__,_|_|   \__,_|\___|\__,_|',
           \ '   Janus watches; Cardea moves.',
           \ ]
+    " Automatically update sessions when quitting
+    let g:startify_session_persistence = 1
+
+    " Change the directory where Startify stores its global sessions
+    let g:startify_session_dir = '~/.vim/sessions'
 endif

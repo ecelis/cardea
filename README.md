@@ -140,3 +140,22 @@ Inside Vim, run:
 ---
 _“Janus watches the gate; Cardea moves the hinge.”_
 
+## 💾 Session Management
+
+Cardea allows you to save and restore your entire workspace (splits,
+buffers, and cursor positions).
+You never have to worry about losing your workspace layout:
+* **Auto-Save:** On exit, your current state is automatically saved to a
+global session called `LastSession`.
+* **One-Key Restore:** Simply select `LastSession` from the welcome
+dashboard to resume exactly where you were.
+* **Manual Control:** Use `:Ssave <name>` if you want to keep a
+permanent snapshot of a specific project.
+
+| Key | Action |
+|-----|------|
+| `<Leader> ss` | **Save Session** (Local to current directory) |
+| `<Leader> sl` | **Load Session** (From current directory) |
+| `:Ssave <name>` | **Global Save** (Will appear on Startify dashboard) |
+| `:Sload <name>` | **Global Load** |
+| `:Sdelete <name>`| **Delete Session** |
