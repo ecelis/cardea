@@ -1,6 +1,9 @@
 # Cardea Vim Distribution
 
-**Cardea** is a modern, high-performance configuration for Vim 9.2+. Named after the Roman Goddess of Hinges, it serves as the functional successor to the classic Janus distribution—providing the "swing" and transition between a traditional editor and a modern IDE.
+**Cardea** is a modern, high-performance configuration for Vim 9.2+. Named
+after the Roman Goddess of Hinges, it serves as the functional successor to the
+classic Janus distribution—providing the "swing" and transition between a
+traditional editor and a modern IDE.
 
 Built for engineers who value speed, asynchronous execution, and a "nerd-rocker" aesthetic.
 
@@ -61,6 +64,13 @@ Vim Script
 :CocInstall coc-go coc-pyright coc-json
 ```
 
+## 🏠 The Welcome Dashboard
+
+When launching `vim` without arguments, Cardea presents a specialized dashboard:
+* **Quick Access:** Press the shortcut key next to any recent file to open it.
+* **Bookmarks:** Built-in shortcuts for configuration files (`c` for .vimrc).
+* **Identity:** Displays the Cardea ASCII header and current working directory.
+
 ## ⌨️ Keybindings
 
 Cardea uses the Spacebar as the <Leader> key for ergonomic, high-speed navigation.
@@ -85,6 +95,19 @@ Cardea uses the Spacebar as the <Leader> key for ergonomic, high-speed navigatio
 |`K`	|Show Documentation (Hover)|
 |`<Leader> rni`	|Rename Symbol (Refactor)|
 |`<Tab>`	|Trigger Autocomplete / Next Item|
+|`K`|Show Documentation (Hover)|
+|`CTRL + f`|Scroll Down in Documentation window|
+|`CTRL + b`|Scroll Up in Documentation window|
+
+### Editing
+
+|Key|Action|
+|---|------|
+|`<Tab>`|Navigate down the autocomplete menu|
+|`<S-Tab>`|Navigate up the autocomplete menu|
+|`<Enter>`|Confirm selection (No new line)|
+|`<Leader> w`|Wrap Paragraph (Hard break at 72 chars)|
+|`<Leader> tw`|"Toggle Wrap (Visual only, no line breaks)"|
 
 ### Editing Defaults
 

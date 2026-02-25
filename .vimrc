@@ -33,20 +33,19 @@ if !g:is_retro_mode
     endif
 
     call plug#begin()
-        " The Essentials (Cardea Legacy Successors)
+        " The Essentials (Janus Legacy Successors)
         Plug 'tpope/vim-sensible'          " Sane defaults everyone agrees on
         Plug 'tpope/vim-fugitive'          " The gold standard for Git
         Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy finder binary
         Plug 'junegunn/fzf.vim'            " FZF Vim integration (replaces CtrlP)
-        Plug 'preservim/nerdtree'          " File tree (The Cardea classic)
+        Plug 'preservim/nerdtree'          " File tree (The Janus classic)
         Plug 'dense-analysis/ale'          " Async Linting (replaces Syntastic)
-        
         " Modern Intelligence
         Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP support (for Go/Python/C)
-        
         " Aesthetics
         Plug 'itchyny/lightline.vim'       " Lightweight status line
         Plug 'sainnhe/gruvbox-material'    " Clean, professional retro-vibe theme
+        Plug 'mhinz/vim-startify' " The Start Screen
     call plug#end()
 endif
 
@@ -80,6 +79,9 @@ else
     set laststatus=2
     set number relativenumber
     set mouse=a
+    " Show a subtle vertical line at the wrap limit
+    set colorcolumn=73
+    highlight ColorColumn ctermbg=235 guibg=#282828
 endif
 
 " 4. Indentation (Standard SE defaults)
@@ -88,6 +90,19 @@ set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 set smartindent
+
+" --- Cardea Text Formatting ---
+
+" Set the standard column width
+set textwidth=72
+
+" <Leader>w to re-format the current paragraph
+" <Leader>W to re-format the current visual selection
+nnoremap <leader>w gqap
+vnoremap <leader>w gq
+
+" Toggle line wrapping (visual only)
+nnoremap <leader>tw :set wrap!<CR>
 
 " 5. Visuals & Theme
 if has('termguicolors')
@@ -105,10 +120,9 @@ if g:is_retro_mode
     colorscheme default " Use the classic base
 else
     " Modern Professional Aesthetic
+    let g:gruvbox_material_background = 'soft'
     colorscheme gruvbox-material
 endif
-" let g:gruvbox_material_background = 'soft'
-" colorscheme gruvbox-material
 
 " 6. Basic Mappings (The 'Janos' Layer)
 let mapleader = " "         " Space as leader is modern & ergonomic
@@ -120,10 +134,15 @@ nnoremap <leader>g :G<CR>
 " --- End Core Config ---
 
 if !g:is_retro_mode
+    " --- Smart NERDTree Launch ---
+    " ONLY open NERDTree if we are opening a specific file/dir 
+    " and NOT when we want the Start Screen.
+    autocmd VimEnter * if argc() > 0 && !exists("s:std_in") | NERDTree | wincmd p | endif
+    " Close Vim if the only window left open is NERDTree
+    autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
     " --- Cardea Intelligence (CoC/LSP) ---
     " Use tab for trigger completion with characters ahead and navigate.
-    " --- Cardea Intelligence (Vim9 optimized) ---
-
     def CheckBackSpace(): bool
       var col = col('.') - 1
       return col == 0 || getline('.')[col - 1] =~ '\s'
@@ -133,16 +152,9 @@ if !g:is_retro_mode
                 \ coc#pum#visible() ? coc#pum#next(1) :
                 \ CheckBackSpace() ? "\<Tab>" :
                 \ coc#refresh()
-    " inoremap <silent><expr> <TAB>
-    "      \ coc#pum#visible() ? coc#pum#next(1) :
-    "      \ check_back_space() ? "\<Tab>" :
-    "      \ coc#refresh()
     inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-    " function! check_back_space() abort
-    "  let col = col('.') - 1
-    "  return !col || getline('.')[col - 1]  =~# '\s'
-    " endfunction
+    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                \: "<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
     " GoTo code navigation
     nmap <silent> gd <Plug>(coc-definition)
@@ -166,26 +178,16 @@ if !g:is_retro_mode
 
     " Symbol renaming (Refactoring)
     nmap <leader>rn <Plug>(coc-rename)
-
-    " --- End Intelligence ---
+   
+    " Scroll the documentation/hover window
+    nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+    nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+    inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+    inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
 endif
-
-" Auto-open NERDTree if no files are specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-" Close Vim if the only window left open is NERDTree
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-
-" Auto-open NERDTree if no files are specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-" Close Vim if the only window left open is NERDTree
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" --- End Intelligence ---
 
 " --- Cardea Go Integration ---
-
 " Auto-format and organize imports on save
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 autocmd BufWritePre *.go :silent call CocAction('format')
@@ -204,3 +206,30 @@ let g:lightline = {
   \   'method': 'CocCurrentFunction'
   \ },
 \ }
+
+" --- Cardea Welcome Screen (Startify) ---
+if !g:is_retro_mode
+    let g:startify_lists = [
+          \ { 'type': 'files',     'header': ['   Recent Files']            },
+          \ { 'type': 'dir',       'header': ['   Current Directory: '. getcwd()] },
+          \ { 'type': 'sessions',  'header': ['   Sessions']              },
+          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']             },
+          \ ]
+
+    let g:startify_bookmarks = [
+          \ { 'c': '~/.vimrc' },
+          \ { 'j': '~/.vim/coc-settings.json' },
+          \ { 'p': '~/projects' },
+          \ ]
+
+    " Custom Header (A bit of Nerd-Rocker flair)
+    let g:startify_custom_header = [
+          \ '   _____               _',
+          \ '  / ____|             | |',
+          \ ' | |     __ _ _ __  __| | ___  __ _',
+          \ ' | |    / _` | ''__|/ _` |/ _ \/ _` |',
+          \ ' | |___| (_| | |  | (_| |  __/ (_| |',
+          \ '  \_____\__,_|_|   \__,_|\___|\__,_|',
+          \ '   Janus watches; Cardea moves.',
+          \ ]
+endif
