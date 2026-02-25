@@ -15,6 +15,27 @@ elseif g:is_linux
     set shell=/bin/bash
 endif
 
+function! CardeaProjectStatus()
+    let l:status = []
+
+    " Get Git Branch
+    let l:branch = system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+    if !empty(l:branch)
+        call add(l:status, "   🌿 Git Branch: " . l:branch)
+    endif
+
+    " Detect Project Type
+    if filereadable('go.mod')
+        let l:go_version = system("go version | awk '{print $3}' | tr -d '\n'")
+        call add(l:status, "   🐹 Go Project (" . l:go_version . ")")
+    elseif isdirectory('.venv') || exists('$VIRTUAL_ENV')
+        let l:venv = exists('$VIRTUAL_ENV') ? substitute($VIRTUAL_ENV, '.*/', '', '') : ".venv"
+        call add(l:status, "   🐍 Python Env: " . l:venv)
+    endif
+
+    return l:status
+endfunction
+
 " --- 2. BOOTSTRAP PLUGIN MANAGER ---
 if !g:is_retro_mode
     let data_dir = expand('~/.vim')
@@ -169,12 +190,11 @@ else
 endif
 
 " --- 7. START SCREEN (Startify) ---
-if !g:is_retro_mode
-    let g:startify_session_dir = '~/.vim/sessions'
-    let g:startify_session_persistence = 1
+" --- Cardea Dashboard Builder ---
 
-    " Figlet-style Header
-    let g:startify_custom_header = [
+function! CardeaBuildHeader()
+    " The static ASCII art
+    let l:header = [
           \ '   _____               _                ',
           \ '  / ____|             | |               ',
           \ ' | |     __ _ _ __  __| | ___  __ _     ',
@@ -183,16 +203,38 @@ if !g:is_retro_mode
           \ '  \_____\__,_|_|   \__,_|\___|\__,_|    ',
           \ '                                        ',
           \ '   Janus watches; Cardea moves the hinge.',
+          \ '   --------------------------------------',
           \ ]
 
-    " Charity Legend & Acknowledgement
+    " Get Git Branch
+    let l:branch = system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+    if !empty(l:branch)
+        call add(l:header, "   🌿 Git Branch: " . l:branch)
+    endif
+
+    " Detect Project Type
+    if filereadable('go.mod')
+        let l:go_version = system("go version | awk '{print $3}' | tr -d '\n'")
+        call add(l:header, "   🐹 Go Project (" . l:go_version . ")")
+    elseif isdirectory('.venv') || exists('$VIRTUAL_ENV')
+        let l:venv = exists('$VIRTUAL_ENV') ? substitute($VIRTUAL_ENV, '.*/', '', '') : ".venv"
+        call add(l:header, "   🐍 Python Env: " . l:venv)
+    endif
+
+    return l:header
+    "let g:startify_custom_header = s:header + CardeaProjectStatus()
+endfunction
+
+" Now assign the function result to Startify
+if !g:is_retro_mode
+    let g:startify_custom_header = CardeaBuildHeader()
     let g:startify_custom_footer = [
-          \ '',
-          \ '   Vim is Charityware. Please read ":help uganda" for details.',
-          \ '   In memory of Bram Moolenaar, the creator of Vim.',
-          \ '   Maintainer: ecelis | Cardea v1.0',
-          \ ]
-
-    " Smart NERDTree Launch (Ensures Startify is visible first)
+              \ '',
+              \ '   Vim is Charityware. Please read ":help uganda" for details.',
+              \ '   In memory of Bram Moolenaar, the creator of Vim.',
+              \ '   Maintainer: ecelis | Cardea v1.0',
+              \ ]
+        " Smart NERDTree Launch (Ensures Startify is visible first)
     autocmd VimEnter * if argc() > 0 && !exists("s:std_in") | NERDTree | wincmd p | endif
+
 endif
