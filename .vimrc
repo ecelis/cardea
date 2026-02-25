@@ -232,6 +232,26 @@ if !g:is_retro_mode
       \ },
     \ }
 
+    " --- Cardea Theme Toggle ---
+
+    function! ToggleTheme()
+        if (g:colors_name == 'tokyonight')
+            let g:gruvbox_material_background = 'soft'
+            colorscheme gruvbox-material
+            let g:lightline.colorscheme = 'gruvbox_material'
+        else
+            let g:tokyonight_style = 'night'
+            colorscheme tokyonight
+            let g:lightline.colorscheme = 'tokyonight'
+        endif
+        call lightline#init()
+        call lightline#colorscheme()
+        call lightline#update()
+    endfunction
+
+    " Map it to <Leader>t
+    nnoremap <leader>t :call ToggleTheme()<CR>
+
     " --- Cardea Welcome Screen (Startify) ---
     if !g:is_retro_mode
         let g:startify_lists = [

@@ -109,6 +109,12 @@ Cardea uses the Spacebar as the <Leader> key for ergonomic, high-speed navigatio
 |`<Leader> w`|Wrap Paragraph (Hard break at 72 chars)|
 |`<Leader> tw`|"Toggle Wrap (Visual only, no line breaks)"|
 
+### Misc
+
+|Key|Action|
+|---|------|
+|`<Leader> t`|Toggle Theme (Switch between Tokyo Night and Gruvbox)|
+
 ### Editing Defaults
 
 - Line Numbers: Hybrid (Absolute current line + Relative others).
