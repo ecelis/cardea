@@ -7,34 +7,14 @@
 " --- 1. ENVIRONMENT & HINGE LOGIC ---
 let g:is_freebsd = has("freebsd")
 let g:is_linux = has("unix") && !has("freebsd") && !has("mac")
-let g:is_retro_mode = (v:progname ==# 'vi')
+"let g:is_retro_mode = (v:progname ==# 'vi')
+let g:is_retro_mode = (v:progname =~? '^vi$') || exists('$RETRO_VIM')
 
 if g:is_freebsd
     set shell=/usr/local/bin/bash
 elseif g:is_linux
     set shell=/bin/bash
 endif
-
-function! CardeaProjectStatus()
-    let l:status = []
-
-    " Get Git Branch
-    let l:branch = system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-    if !empty(l:branch)
-        call add(l:status, "   🌿 Git Branch: " . l:branch)
-    endif
-
-    " Detect Project Type
-    if filereadable('go.mod')
-        let l:go_version = system("go version | awk '{print $3}' | tr -d '\n'")
-        call add(l:status, "   🐹 Go Project (" . l:go_version . ")")
-    elseif isdirectory('.venv') || exists('$VIRTUAL_ENV')
-        let l:venv = exists('$VIRTUAL_ENV') ? substitute($VIRTUAL_ENV, '.*/', '', '') : ".venv"
-        call add(l:status, "   🐍 Python Env: " . l:venv)
-    endif
-
-    return l:status
-endfunction
 
 " --- 2. BOOTSTRAP PLUGIN MANAGER ---
 if !g:is_retro_mode
@@ -89,10 +69,25 @@ set textwidth=72
 " --- 4. DUAL-MODE VISUALS (Safe Load) ---
 if g:is_retro_mode
     " Retro Face: Distraction-free Phosphor Green
+    " " Kill all plugin loading immediately
+    let g:loaded_coc_nvim = 1
+    let g:loaded_nerdtree = 1
+    let g:loaded_fzf = 1
+    let g:loaded_startify = 1
+
+    set nocompatible
     set laststatus=0
     set nonumber
+    set norelativenumber
+    set signcolumn=no
     set mouse=
-    autocmd VimEnter * highlight Normal guifg=#33ff33 guibg=black
+    set noruler
+    set noshowmode
+    set guicursor=a:block-blinkon0
+
+    " Apply Phosphor Green aesthetic
+    autocmd VimEnter * highlight Normal guifg=#33ff33 guibg=black ctermfg=10 ctermbg=0
+    colorscheme default
 else
     " Modern Face: Tokyo Night Default
     set laststatus=2
@@ -190,6 +185,28 @@ else
 endif
 
 " --- 7. START SCREEN (Startify) ---
+function! CardeaProjectStatus()
+    let l:status = []
+
+    " Get Git Branch
+    let l:branch = system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+    if !empty(l:branch)
+        call add(l:status, "   🌿 Git Branch: " . l:branch)
+    endif
+
+    " Detect Project Type
+    if filereadable('go.mod')
+        let l:go_version = system("go version | awk '{print $3}' | tr -d '\n'")
+        call add(l:status, "   🐹 Go Project (" . l:go_version . ")")
+    elseif isdirectory('.venv') || exists('$VIRTUAL_ENV')
+        let l:venv = exists('$VIRTUAL_ENV') ? substitute($VIRTUAL_ENV, '.*/', '', '') : ".venv"
+        call add(l:status, "   🐍 Python Env: " . l:venv)
+    endif
+
+    return l:status
+endfunction
+
+
 " --- Cardea Dashboard Builder ---
 
 function! CardeaBuildHeader()
