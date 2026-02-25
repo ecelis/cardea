@@ -40,6 +40,7 @@ if !g:is_retro_mode
         Plug 'junegunn/fzf.vim'            " FZF Vim integration (replaces CtrlP)
         Plug 'preservim/nerdtree'          " File tree (The Janus classic)
         Plug 'dense-analysis/ale'          " Async Linting (replaces Syntastic)
+        Plug 'tpope/vim-commentary'        " Block comment
         " Modern Intelligence
         Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP support (for Go/Python/C)
         " Aesthetics

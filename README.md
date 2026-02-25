@@ -108,7 +108,9 @@ Cardea uses the Spacebar as the <Leader> key for ergonomic, high-speed navigatio
 |`<Enter>`|Confirm selection (No new line)|
 |`<Leader> w`|Wrap Paragraph (Hard break at 72 chars)|
 |`<Leader> tw`|"Toggle Wrap (Visual only, no line breaks)"|
-
+|`gcc`|Comment/Uncomment current line|
+|`gc`|Comment/Uncomment selected block (Visual Mode)|
+|`CTRL-v`|Start Visual Block mode (Native commenting)|
 ### Misc
 
 |Key|Action|
