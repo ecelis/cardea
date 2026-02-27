@@ -1,4 +1,4 @@
-"" =============================================================================
+"t" =============================================================================
 " CARDEA VIM CONFIGURATION (v1.0)
 " The Functional Successor to Janus | Optimized for Vim 9.2
 " Copyright Ernesto Celis <ecelis@sdf.org>
@@ -42,6 +42,8 @@ if !g:is_retro_mode
         " Intelligence & Formatting
         Plug 'neoclide/coc.nvim', {'branch': 'release'}
         Plug 'dense-analysis/ale'
+        Plug 'madox2/vim-ai'
+        Plug 'madox2/vim-ai-provider-google'
 
         " Themes
         Plug 'ghifarit53/tokyonight-vim'
@@ -163,6 +165,58 @@ if !g:is_retro_mode
     autocmd CursorHold * if exists('*CocActionAsync') | silent call CocActionAsync('highlight') | endif
     autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
     autocmd BufWritePre *.go :silent call CocAction('format')
+
+    " AI Assistant
+    " --- Cardea Agentic AI (Vim-AI Wrapper) ---
+    " --- 2. Initialize Default Config (Prevents E716) ---
+    let g:vim_ai_chat = {
+        \  "provider": g:ai_provider,
+        \  "options": {
+        \    "model": "gemini-2.5-flash-lite",
+        \    "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+        \    "max_tokens": 1000,
+        \    "temperature": 0.1,
+        \    "request_timeout": 20,
+        \    "force_new_chat": 0,
+        \    "selection_boundary": "#####",
+        \  },
+        \  "ui": {
+        \    "width": 0.5,
+        \    "paste_mode": 1,
+        \    "open_chat_command": "preset_right",
+        \    "scratch_buffer_keep_open": 0,
+        \    "force_new_chat": 0,
+        \    "populate_options": 0,
+        \    "populate_all_options": 0,
+        \  }
+        \}
+
+    function! ToggleAIProvider()
+        if g:ai_provider == 'google'
+            let g:ai_provider = 'claude'
+            call extend(g:vim_ai_chat.options, {
+                \ "model": "claude-3-5-sonnet",
+                \ "endpoint": "https://api.anthropic.com/v1/messages"
+                \ })
+            echo "Cardea AI: Claude 3.5 Active"
+        else
+            let g:ai_provider = 'google'
+            call extend(g:vim_ai_chat.options, {
+                \ "model": "gemini-1.5-pro",
+                \ "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+                \ })
+            echo "Cardea AI: Gemini 1.5 Active"
+        endif
+    endfunction
+
+    " Mappings
+    nnoremap <leader>at :call ToggleAIProvider()<CR>
+    vnoremap <leader>ai :AIChat<CR>
+    nnoremap <leader>ai :AIChat<CR>
+
+" Set the initial provider
+let g:ai_provider = 'google'
+   
 endif
 
 " --- 7. START SCREEN & SESSIONS ---
