@@ -169,6 +169,9 @@ if !g:is_retro_mode
     " AI Assistant
     " --- Cardea Agentic AI (Vim-AI Wrapper) ---
     " --- 2. Initialize Default Config (Prevents E716) ---
+    "" Set the initial provider
+    let g:ai_provider = 'google'
+ 
     let g:vim_ai_chat = {
         \  "provider": g:ai_provider,
         \  "options": {
@@ -214,9 +217,7 @@ if !g:is_retro_mode
     vnoremap <leader>ai :AIChat<CR>
     nnoremap <leader>ai :AIChat<CR>
 
-" Set the initial provider
-let g:ai_provider = 'google'
-   
+  
 endif
 
 " --- 7. START SCREEN & SESSIONS ---
