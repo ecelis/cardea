@@ -12,6 +12,13 @@ if [ "$OS" = "FreeBSD" ]; then
     echo "Detected FreeBSD. Using pkg..."
     # Note: Assumes user has sudo/root permissions
     pkg install -y node npm git fzf ripgrep
+elif [ "$OS" = "Darwin" ]; then
+    echo "Detected Mac OS. Using brew.."]
+    brew install git
+    brew install node 
+    brew install fzf
+    brew install ripgrep
+    brew install vim
 elif [ -f /etc/fedora-release ]; then
     echo "Detected Fedora. Using dnf..."
     sudo dnf install -y nodejs git fzf ripgrep
