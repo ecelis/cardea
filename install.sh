@@ -1,5 +1,5 @@
 #!/bin/sh
-# Cardea Installer for Fedora & FreeBSD
+# Cardea Installer for Linux, FreeBSD and MacOS
 
 set -e
 
@@ -19,9 +19,17 @@ elif [ "$OS" = "Darwin" ]; then
     brew install fzf
     brew install ripgrep
     brew install vim
-elif [ -f /etc/fedora-release ]; then
-    echo "Detected Fedora. Using dnf..."
-    sudo dnf install -y nodejs git fzf ripgrep
+elif [ "$OS" = "Linux" ]; then
+	if [ -f /etc/fedora-release ]; then
+	    echo "Detected Fedora. Using dnf..."
+	    sudo dnf install -y nodejs git fzf ripgrep
+	elif [ -f /etc/redhat-release ]; then
+	    echo "Detected Red Hat or Relative. Using dnf..."
+	    sudo dnf install -y nodejs git fzf ripgrep
+	fi
+else
+	echo "No supported system detected. Aborting."
+	exit 0
 fi
 
 # Create symlink
