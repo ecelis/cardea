@@ -14,6 +14,8 @@ Cardea uses the Gruvbox Material (Soft) theme to provide a high-contrast yet eye
 ## 🚀 Features
 
 * **Vim 9.2 Optimized:** Leverages the latest performance improvements.
+  Also works in Neovim
+* **vim-plug** Plugin manager
 * **Asynchronous Intelligence:** Powered by `coc.nvim` for LSP support (Go, Python, C).
 * **Blazing Fast Navigation:** Replaces the heavy CtrlP with `FZF`.
 * **Minimalist UI:** Uses `lightline` and `gruvbox-material` for a clean, retro-computing look.
@@ -23,7 +25,7 @@ Cardea uses the Gruvbox Material (Soft) theme to provide a high-contrast yet eye
 
 ### Prerequisites
 
-1.  **Vim 9.2+** (compiled with `+python3`).
+1.  **Vim 9.2+** (compiled with `+python3`) or Neovim
 2.  **Node.js** (required for CoC/LSP).
 3.  **FZF** and **Ripgrep** (`rg`) installed on your system.
 
